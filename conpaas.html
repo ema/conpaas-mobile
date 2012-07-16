@@ -20,32 +20,38 @@
     */
     var ENDPOINT = "http://localhost:5000";
 
-    $(document).ready(function() {
-        $("#loginform").submit(function() {
-            localStorage.setItem("username", $("#username").val());
-            localStorage.setItem("password", $("#password").val());
+    function authUser() {
+        localStorage.setItem("username", $("#username").val());
+        localStorage.setItem("password", $("#password").val());
 
-            var login_url = ENDPOINT + "/login";
-            $.ajax({ 
-                url: login_url,
-                data: { 
-                    "username": $("#username").val(), 
-                    "password": $("#password").val()  
-                }, 
-                type: 'POST',
-                success: function(res) { 
-                    if (eval(res)) 
-                        // authentication succeeded
-                        alert("ok");
-                    else
-                        alert("ko");
-                },
-                error: function() { 
-                    alert("Error performing login"); 
+        var login_url = ENDPOINT + "/login";
+        $.ajax({ 
+            url: login_url,
+            data: { 
+                "username": $("#username").val(), 
+                "password": $("#password").val()  
+            }, 
+            type: 'POST',
+            success: function(res) { 
+                if (eval(res)) {
+                    // authentication succeeded
+                    $.mobile.changePage("#service-list-page", "fade", true, false);
                 }
-            });
-            return false;
-	});
+                else {
+                    $("#login-form-message").html("Authentication failed");
+                }
+            },
+            error: function() { 
+                alert("Error performing login"); 
+            }
+        });
+
+        return false;
+    }
+
+    $(document).ready(function() {
+        // login-form behavior
+        $("#login-form").bind("submit", authUser);
     });
 </script>
 
@@ -54,7 +60,9 @@
     <header data-role="header"><h1>ConPaaS Mobile</h1></header>
 
     <div data-role="content">	
-        <form id="loginform">
+        <div id="login-form-message">&nbsp;</div>
+
+        <form id="login-form" method="post">
             <div data-role="fieldcontain">
                 <label for="username">Username:</label>
                 <input id="username" type="text" name="username" value="" />
@@ -70,6 +78,17 @@
     </div><!-- /content -->
 
 </section><!-- /login-page -->
+
+
+<section id="service-list-page" data-role="page">
+
+    <header data-role="header"><h1>ConPaaS Mobile</h1></header>
+
+    <div data-role="content">	
+    <p>Your ConPaaS services:</p>
+    </div><!-- /content -->
+
+</section><!-- /service-list-page -->
 
 </body>
 </html>
