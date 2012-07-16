@@ -1,0 +1,77 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <title>ConPaaS Mobile</title> 
+        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+        <!--
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+        <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+        -->
+        <link rel="stylesheet" href="jquery.mobile-1.1.0.min.css" />
+        <script src="jquery-1.7.1.min.js"></script>
+        <script src="jquery.mobile-1.1.0.min.js"></script>
+    </head> 
+<body> 
+
+<script type="text/javascript">
+    /*
+    var ENDPOINT = "http://ec2-107-21-172-31.compute-1.amazonaws.com";
+    */
+    var ENDPOINT = "http://localhost:5000";
+
+    $(document).ready(function() {
+        $("#loginform").submit(function() {
+            localStorage.setItem("username", $("#username").val());
+            localStorage.setItem("password", $("#password").val());
+
+            var login_url = ENDPOINT + "/login";
+            $.ajax({ 
+                url: login_url,
+                data: { 
+                    "username": $("#username").val(), 
+                    "password": $("#password").val()  
+                }, 
+                type: 'POST',
+                success: function(res) { 
+                    if (eval(res)) 
+                        // authentication succeeded
+                        alert("ok");
+                    else
+                        alert("ko");
+                },
+                error: function() { 
+                    alert("Error performing login"); 
+                }
+            });
+            return false;
+	});
+    });
+</script>
+
+<div data-role="page">
+
+    <div data-role="header">
+        <h1>ConPaaS Mobile</h1>
+    </div><!-- /header -->
+
+    <div data-role="content">	
+        <form id="loginform">
+            <div data-role="fieldcontain">
+                <label for="username">Username:</label>
+                <input id="username" type="text" name="username" value="" />
+            </div>
+
+            <div data-role="fieldcontain">
+                <label for="password">Password:</label>
+                <input id="password" type="password" name="password" value="" />	
+            </div>	
+
+            <input type="submit" name="go" value="login" />
+        </form>		
+    </div><!-- /content -->
+
+</div><!-- /page -->
+
+</body>
+</html>
