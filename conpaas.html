@@ -15,71 +15,95 @@
     </head> 
 <body> 
 
-<section id="page-service-list" data-role="page">
+<!-- Begin: Service List Page -->
+<section id="pageServiceList" data-role="page">
 
     <header data-role="header" data-position="fixed">
-        <h1>ConPaaS</h1>
+        <!-- Settings button -->
         <a href="#pageSettings"
             data-transition="flip"
             data-role="button"
             data-icon="gear"
             data-iconpos="notext"
-            class="ui-btn-right">Options</a>
+            class="ui-btn-left">Options</a>
+    
+        <!-- App name -->
+        <h1>ConPaaS</h1>
+
+        <!-- Add Service button -->
+        <a href="#pageAddService"
+            data-role="button"
+            data-icon="plus"
+            data-iconpos="notext"
+            class="ui-btn-right">Add Service</a>
     </header>
 
-    <div data-role="content">	
-    <h3>ema's dashboard</h3>
-    <p>
-        <input type="submit" value="Logout" data-inline="true">
-    </p>
+    <div class="content" data-role="content">	
+        <ul data-role="listview">
+            <li data-role="divider">gpierre's running services</li>
+            <li><a href="#pageServiceDetail" data-transition="slide">PHP test service</a></li>
+            <li><a href="#pageServiceDetail" data-transition="slide">MySQL database</a></li>
+            <li><a href="#pageServiceDetail" data-transition="slide">Functional Tests</a></li>
+        </ul>
+    </div><!-- /content -->
 
-    <ul data-role="listview">
-        <li data-role="divider">Create a new service</li>
-        <li><a href="#">PHP web hosting service</a></li>
-        <li><a href="#">Java web hosting service</a></li>
-        <li><a href="#">MySQL database service</a></li>
-        <li data-role="divider">Currently running</li>
-        <li><a href="#">New PHP service</a></li>
-        <li><a href="#">MySQL database</a></li>
-        <li><a href="#">Functional Testing Service</a></li>
-    </ul>
+</section>
+<!-- End: Service List Page -->
 
-    <h3>Alternative approach</h3>
-    <div data-role="controlgroup">
-        <a href="#" data-role="button">Show running services</a>
-        <a href="#" data-role="button">Create a new service</a>
-        <!-- fixme -->
-        <a href="#" onclick="logout" data-role="button">Logout</a>
+<!-- Begin: Settings Page -->
+<section id="pageSettings" data-role="page">
+
+    <header data-role="header"><h1>ConPaaS</h1></header>
+
+    <div class="content" data-role="content">	
+        <h3>Settings</h3>
+
+        <div data-role="fieldcontain">
+            <label for="username">Username:</label>
+            <input id="username" type="text" name="username" value="gpierre" />
+        </div>
+
+        <div data-role="fieldcontain">
+             <label for="password">Password:</label>
+             <input id="password" type="password" name="password" value="testPassWord123!" />	
+        </div>	
+    </div><!-- /content -->
+
+</section>
+<!-- End: Settings Page -->
+
+<!-- Begin: Add Service Page -->
+<section id="pageAddService" data-role="page">
+
+    <header data-role="header"><h1>ConPaaS</h1></header>
+
+    <div class="content" data-role="content">	
+        <ul data-role="listview">
+            <li data-role="divider">Add a new service</li>
+            <li><a href="#">Web hosting</a></li>
+            <li><a href="#">MySQL database</a></li>
+            <li><a href="#">Scalarix key-value store</a></li>
+            <li><a href="#">Hadoop MapReduce cluster</a></li>
+            <li><a href="#">Bags of tasks service</a></li>
+            <li><a href="#">Functional testing</a></li>
+        </ul>
     </div>
 
+</section>
+<!-- End: Add Service Page -->
 
-    </div><!-- /content -->
+<!-- Begin: Service detail Page -->
+<section id="pageServiceDetail" data-role="page">
 
-</section><!-- /service-list-page -->
+    <header data-role="header"><h1>ConPaaS</h1></header>
 
-<section id="login-page" data-role="page">
-
-    <header data-role="header"><h1>ConPaaS Mobile</h1></header>
-
-    <div data-role="content">	
-        <div id="login-form-message">&nbsp;</div>
-
-        <form id="login-form" method="post">
-            <div data-role="fieldcontain">
-                <label for="username">Username:</label>
-                <input id="username" type="text" name="username" value="" />
-            </div>
-
-            <div data-role="fieldcontain">
-                <label for="password">Password:</label>
-                <input id="password" type="password" name="password" value="" />	
-            </div>	
-
-            <input type="submit" name="go" value="login" />
-        </form>		
-    </div><!-- /content -->
-
-</section><!-- /login-page -->
+    <div class="content" data-role="content">	
+        <div class="container-service">
+            <p>PHP web hosting service</p>
+        </div>
+    </div>
+</section>
+<!-- End: Service detail Page -->
 
 </body>
 </html>
