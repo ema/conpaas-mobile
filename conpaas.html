@@ -11,49 +11,51 @@
         <link rel="stylesheet" href="jquery.mobile-1.1.0.min.css" />
         <script src="jquery-1.7.1.min.js"></script>
         <script src="jquery.mobile-1.1.0.min.js"></script>
+        <script src="conpaas.js"></script>
     </head> 
 <body> 
 
-<script type="text/javascript">
-    /*
-    var ENDPOINT = "http://ec2-107-21-172-31.compute-1.amazonaws.com";
-    */
-    var ENDPOINT = "http://localhost:5000";
+<section id="page-service-list" data-role="page">
 
-    function authUser() {
-        localStorage.setItem("username", $("#username").val());
-        localStorage.setItem("password", $("#password").val());
+    <header data-role="header" data-position="fixed">
+        <h1>ConPaaS</h1>
+        <a href="#pageSettings"
+            data-transition="flip"
+            data-role="button"
+            data-icon="gear"
+            data-iconpos="notext"
+            class="ui-btn-right">Options</a>
+    </header>
 
-        var login_url = ENDPOINT + "/login";
-        $.ajax({ 
-            url: login_url,
-            data: { 
-                "username": $("#username").val(), 
-                "password": $("#password").val()  
-            }, 
-            type: 'POST',
-            success: function(res) { 
-                if (eval(res)) {
-                    // authentication succeeded
-                    $.mobile.changePage("#service-list-page", "fade", true, false);
-                }
-                else {
-                    $("#login-form-message").html("Authentication failed");
-                }
-            },
-            error: function() { 
-                alert("Error performing login"); 
-            }
-        });
+    <div data-role="content">	
+    <h3>ema's dashboard</h3>
+    <p>
+        <input type="submit" value="Logout" data-inline="true">
+    </p>
 
-        return false;
-    }
+    <ul data-role="listview">
+        <li data-role="divider">Create a new service</li>
+        <li><a href="#">PHP web hosting service</a></li>
+        <li><a href="#">Java web hosting service</a></li>
+        <li><a href="#">MySQL database service</a></li>
+        <li data-role="divider">Currently running</li>
+        <li><a href="#">New PHP service</a></li>
+        <li><a href="#">MySQL database</a></li>
+        <li><a href="#">Functional Testing Service</a></li>
+    </ul>
 
-    $(document).ready(function() {
-        // login-form behavior
-        $("#login-form").bind("submit", authUser);
-    });
-</script>
+    <h3>Alternative approach</h3>
+    <div data-role="controlgroup">
+        <a href="#" data-role="button">Show running services</a>
+        <a href="#" data-role="button">Create a new service</a>
+        <!-- fixme -->
+        <a href="#" onclick="logout" data-role="button">Logout</a>
+    </div>
+
+
+    </div><!-- /content -->
+
+</section><!-- /service-list-page -->
 
 <section id="login-page" data-role="page">
 
@@ -78,17 +80,6 @@
     </div><!-- /content -->
 
 </section><!-- /login-page -->
-
-
-<section id="service-list-page" data-role="page">
-
-    <header data-role="header"><h1>ConPaaS Mobile</h1></header>
-
-    <div data-role="content">	
-    <p>Your ConPaaS services:</p>
-    </div><!-- /content -->
-
-</section><!-- /service-list-page -->
 
 </body>
 </html>
