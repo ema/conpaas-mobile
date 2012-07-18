@@ -3,14 +3,22 @@
     <head> 
         <title>ConPaaS Mobile</title> 
         <meta name="viewport" content="width=device-width, initial-scale=1"> 
-        <!--
-        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
-        <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-        <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
-        -->
-        <link rel="stylesheet" href="jquery.mobile-1.1.0.min.css" />
-        <script src="jquery-1.7.1.min.js"></script>
+
+        <!-- Load jQuery -->
+        <script src="jquery-1.7.1.min.js"></script> 
+
+        <!-- Add jQuery's Back button to pages with no buttons in the header -->
+        <script type="text/javascript">
+        $(document).bind("mobileinit", function() {
+            $.mobile.page.prototype.options.addBackBtn = true;
+         });    
+        </script>   
+
+        <!-- Load jQuery mobile -->
         <script src="jquery.mobile-1.1.0.min.js"></script>
+        <link rel="stylesheet" href="jquery.mobile-1.1.0.min.css" />
+
+        <!-- Load ConPaaS mobile -->
         <script src="conpaas.js"></script>
     </head> 
 <body> 
@@ -77,7 +85,7 @@
 
     <header data-role="header"><h1>ConPaaS</h1></header>
 
-    <div class="content" data-role="content">	
+    <div class="content" data-role="content"> <!--data-add-back-btn="false">-->
         <ul data-role="listview">
             <li data-role="divider">Add a new service</li>
             <li><a href="#">Web hosting</a></li>
@@ -104,6 +112,17 @@
     </div>
 </section>
 <!-- End: Service detail Page -->
+
+<!-- Begin: Error page -->
+<section id="pageError" data-role="page" data-theme="e">
+
+    <header data-role="header"><h1>ConPaaS</h1></header>
+
+    <div class="content" data-role="content">
+    </div>
+</section>
+<!-- End: Error page -->
+
 
 </body>
 </html>
