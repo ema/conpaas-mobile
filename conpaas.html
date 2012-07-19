@@ -49,9 +49,18 @@
     <div class="content" data-role="content">	
         <ul data-role="listview">
             <li data-role="divider">gpierre's running services</li>
-            <li><a href="#pageServiceDetail" data-transition="slide">PHP test service</a></li>
-            <li><a href="#pageServiceDetail" data-transition="slide">MySQL database</a></li>
-            <li><a href="#pageServiceDetail" data-transition="slide">Functional Tests</a></li>
+            <li>
+                <a href="#pageServiceDetail" data-transition="slide">
+                    New PHP service
+                    <span class="ui-li-count">1</span>
+                </a>
+            </li>
+            <li>
+                <a href="#pageServiceDetail" data-transition="slide">
+                    MySQL database
+                    <span class="ui-li-count">3</span>
+                </a>
+            </li>
         </ul>
     </div><!-- /content -->
 
@@ -106,9 +115,23 @@
     <header data-role="header"><h1>ConPaaS</h1></header>
 
     <div class="content" data-role="content">	
-        <div class="container-service">
-            <p>PHP web hosting service</p>
+        <h3>New PHP Service</h3>
+
+        <!--
+        <p>Status: init <img src="images/ledlightblue.png"></p>
+        -->
+
+        <div data-role="controlgroup" data-type="vertical" data-inline="true">
+            <a href="#" data-role="button" data-icon="arrow-r" data-iconpos="left">Start</a>
+            <a href="#" data-role="button" data-icon="delete" data-iconpos="left">Terminate</a>
+            <a href="#" data-role="button" data-icon="info" data-iconpos="left">Access Logs</a>
         </div>
+
+        <br />
+        <ul data-role="listview">
+            <li data-role="divider">Instances <span class="ui-li-count">1</span></li>
+            <li>Instance-i3a820043 - manager - running</li>
+        </ul>
     </div>
 </section>
 <!-- End: Service detail Page -->
