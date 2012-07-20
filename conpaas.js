@@ -4,31 +4,45 @@ var ENDPOINT = "http://ec2-107-21-172-31.compute-1.amazonaws.com";
 var ENDPOINT = "http://localhost:5000";
 
 (function($) {
+    var updateIfConfigured = function() {
+        // Build the service list page
+        // If the settings have been configured already
+        if (localStorage.getItem("username") !== null) {
+            updateServiceList();
+        }
+    }
+
     var methods = {
         initServiceListPage : function() {
             var $page = $("#pageServiceList");
 
-            localStorage.removeItem("username");
+            //localStorage.removeItem("username");
+
+            if (localStorage.getItem("username") !== null) {
+                updateIfConfigured();
+            }
 
             $page.bind("pageshow", function(event, ui) {
-                // Build the service list page
-                // If the settings have been configured already
-                if (localStorage.getItem("username") !== null) {
-                    updateServiceList();
-                }
+                updateIfConfigured();
             });
         },
 
         initSettingsPage : function() {
             var $page = $("#pageSettings");
+
+            var $uname = $page.find("#username");
+            var $pass  = $page.find("#password");
+    
+            $uname.val(localStorage.getItem("username"));
+            $pass.val(localStorage.getItem("password"));
             
             // Update localStorage with the specified username and password
-            $page.find("#username").change(function() {
+            $uname.change(function() {
                 var newVal = $(this).val();
                 localStorage.setItem("username", newVal);
             });
 
-            $page.find("#password").change(function() {
+            $pass.change(function() {
                 var newVal = $(this).val();
                 localStorage.setItem("password", newVal);
             });
@@ -79,6 +93,11 @@ var updateServiceList = function() {
         success: function(data) {
             // Delete the existing list, if any
             $page.find(".content").empty();
+
+            if (data === false) {
+                $page.find(".content").html("<p>Authentication failed.</p><p>Please <a href='#pageSettings'>check your credentials</a>.");
+                return;
+            }
 
             if (data.length === 0) {
                 $page.find(".content").html("<p>No running services!</p>");
