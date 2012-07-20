@@ -70,6 +70,15 @@ var ENDPOINT = "http://localhost:5000";
         },
 
         initAddServicePage : function() {
+            var $page = $("#pageAddService");
+            $page.find(".addService").each(function(idx, el) {
+                $(el).click(function() { startService(el) });
+            });
+
+            var $page = $("#pageAddServiceWeb");
+            $page.find(".addService").each(function(idx, el) {
+                $(el).click(function() { startService(el) });
+            });
         },
 
         initAll : function() {
@@ -163,49 +172,53 @@ var updateServiceList = function() {
             });
         },
         error: function() {
-            // Get the error page
-            var $page = $("#pageError .content");
-            // Build an error message
-            var strHtml = "<h3>Service listing failed</h3>";
-            strHtml += "<p>We were unable to list the currently running services. Please try again.</p>"
-            // Place the message in the error dialog
-            $page.html(strHtml);
-            // Show the dialog
-            $("#show-error-page").click();
+            showError("Service listing failed", 
+                "We were unable to list the currently running services. Please try again.");
         }
     });
 }
 
-var authUser = function() {
-    // really use localStorage !
-    localStorage.setItem("username", $("#username").val());
-    localStorage.setItem("password", $("#password").val());
+var showError = function(title, message) {
+    // Get the error page
+    var $page = $("#pageError .content");
+    // Build an error message
+    var strHtml = "<h3>" + title + "</h3>";
+    strHtml += "<p>" + message + "</p>"
+    // Place the message in the error dialog
+    $page.html(strHtml);
+    // Show the dialog
+    $("#show-error-page").click();
+}
 
-    var login_url = ENDPOINT + "/login";
+// Function to post data to the ConPaaS director and create a new
+// service
+var startService = function(elem) {
+    var serviceType = $(elem).attr("name");
+    console.log(serviceType);
+
+    var url = ENDPOINT + "/start/" + serviceType;
+
     $.ajax({ 
-        url: login_url,
+        url: url,
         data: { 
             "username": localStorage.getItem("username"), 
             "password": localStorage.getItem("password")
         }, 
         type: 'POST',
         success: function(res) { 
-            if (eval(res)) {
-                // authentication succeeded
-                console.log("auth ok");
-                $.mobile.changePage("#ServiceListPage", "fade", true, false);
+            if (eval(res) === false) {
+                showError("Service creation failure", 
+                    "Authentication failed. Please check your credentials.");
             }
             else {
-                console.log("auth ko");
-                $.mobile.changePage("#SettingsPage", "fade", true, false);
+                $.mobile.changePage("#pageServiceList", "fade", true, false);
             }
         },
         error: function() { 
-            alert("Error performing login"); 
+            showError("Service creation failure", 
+                "Error creating a new service. Please try again.");
         }
     });
-
-    return false;
 }
 
 $(document).ready(function() {
