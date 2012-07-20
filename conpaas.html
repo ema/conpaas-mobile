@@ -111,17 +111,33 @@
     <div class="content" data-role="content"> <!--data-add-back-btn="false">-->
         <ul data-role="listview">
             <li data-role="divider">Add a new service</li>
-            <li><a href="#">Web hosting</a></li>
-            <li><a href="#">MySQL database</a></li>
-            <li><a href="#">Scalarix key-value store</a></li>
-            <li><a href="#">Hadoop MapReduce cluster</a></li>
-            <li><a href="#">Bags of tasks service</a></li>
-            <li><a href="#">Functional testing</a></li>
+            <li><a href="#pageAddServiceWeb" data-transition="slide">Web hosting</a></li>
+            <li data-icon="add"><a class="addService" name="mysql" href="#">MySQL database</a></li>
+            <li data-icon="add"><a class="addService" name="scalaris" href="#">Scalarix key-value store</a></li>
+            <li data-icon="add"><a class="addService" name="mapreduce" href="#">Hadoop MapReduce cluster</a></li>
+            <li data-icon="add"><a class="addService" name="taskfarm" href="#">Bags of tasks service</a></li>
+            <li data-icon="add"><a class="addService" name="selenium" href="#">Functional testing</a></li>
+            <!-- Developers: add new services here -->
         </ul>
     </div>
 
 </section>
 <!-- End: Add Service Page -->
+
+<!-- Begin: Add Service Web Page -->
+<section id="pageAddServiceWeb" data-role="page">
+
+    <header data-role="header"><h1>ConPaaS</h1></header>
+
+    <div class="content" data-role="content"> <!--data-add-back-btn="false">-->
+        <h3>New Web Hosting service</h3>
+        <div data-role="controlgroup" data-type="vertical" data-inline="true">
+            <a class="addService" name="php"  href="#" data-role="button" data-icon="add" data-iconpos="left">php</a>
+            <a class="addService" name="java" href="#" data-role="button" data-icon="add" data-iconpos="left">java</a>
+            <!-- Developers: add new runtimes for the web hosting service here -->
+        </div>
+    </div>
+</section>
 
 <!-- Begin: Service detail Page -->
 <section id="pageServiceDetail" data-role="page">
