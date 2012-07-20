@@ -4,7 +4,7 @@ var ENDPOINT = "http://ec2-107-21-172-31.compute-1.amazonaws.com";
 var ENDPOINT = "http://localhost:5000";
 
 (function($) {
-    var updateIfConfigured = function() {
+    var updateServiceListIfConfigured = function() {
         // Build the service list page
         // If the settings have been configured already
         if (localStorage.getItem("username") !== null) {
@@ -19,11 +19,11 @@ var ENDPOINT = "http://localhost:5000";
             //localStorage.removeItem("username");
 
             if (localStorage.getItem("username") !== null) {
-                updateIfConfigured();
+                updateServiceListIfConfigured();
             }
 
             $page.bind("pageshow", function(event, ui) {
-                updateIfConfigured();
+                updateServiceListIfConfigured();
             });
         },
 
@@ -48,17 +48,35 @@ var ENDPOINT = "http://localhost:5000";
             });
         },
 
-        initAddServicePage : function() {
+        initServiceDetailPage : function() {
+            var $page = $("#pageServiceDetail");
+
+            // Every time this page shows, we need to display a service detail
+            $page.bind("pageshow", function(event, ui) {
+                var service = JSON.parse($page.data("serviceJSON"));
+
+                // Set service name
+                //var strHtml = "<img src='images/" + service.type + ".png'>" + service.name;
+                $page.find(".serviceName").html(service.name);
+
+                // Set the manager vm id
+                $page.find(".managerVmid").html(service.vmid);
+
+                // Set instance count
+                // TODO: get the number of agents from the master and sum it up
+                $("#nInstances").html(1 + 0);
+            });
+
         },
 
-        initServiceDetailPage : function() {
+        initAddServicePage : function() {
         },
 
         initAll : function() {
             $().initApp("initServiceListPage");
             $().initApp("initSettingsPage");
-            $().initApp("initAddServicePage");
             $().initApp("initServiceDetailPage");
+            $().initApp("initAddServicePage");
         }
     }
 
@@ -112,6 +130,8 @@ var updateServiceList = function() {
 
             // Add list header
             var strHtml = '<li data-role="divider">' + username + '\'s running services</li>';
+            
+            //strHtml += '<span class="ul-li-count ui-btn-up-c ui-btn-corner-all">' + data.length + '</span></li>';
             $list.append($(strHtml));
 
             for (var i=0; i < data.length; i++) {
@@ -139,7 +159,7 @@ var updateServiceList = function() {
             // Give the detail page the data it needs to display
             $list.find("a").click(function() {
                 var $this = $(this);
-                $("#pageServicetDetail").data("serviceJSON", $this.data("serviceJSON"));
+                $("#pageServiceDetail").data("serviceJSON", $this.data("serviceJSON"));
             });
         },
         error: function() {
