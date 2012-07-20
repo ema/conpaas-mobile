@@ -163,7 +163,15 @@ var updateServiceList = function() {
             });
         },
         error: function() {
-            alert("Error");
+            // Get the error page
+            var $page = $("#pageError .content");
+            // Build an error message
+            var strHtml = "<h3>Service listing failed</h3>";
+            strHtml += "<p>We were unable to list the currently running services. Please try again.</p>"
+            // Place the message in the error dialog
+            $page.html(strHtml);
+            // Show the dialog
+            $("#show-error-page").click();
         }
     });
 }
