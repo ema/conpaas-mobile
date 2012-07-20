@@ -8,19 +8,30 @@ var ENDPOINT = "http://localhost:5000";
         initServiceListPage : function() {
             var $page = $("#pageServiceList");
 
-            // Set some defaults XXX
-            localStorage.setItem("username", "ema");
-            localStorage.setItem("password", "prova");
-
-            // Update the service list for the first time
-            updateServiceList();
+            localStorage.removeItem("username");
 
             $page.bind("pageshow", function(event, ui) {
-                updateServiceList();
+                // Build the service list page
+                // If the settings have been configured already
+                if (localStorage.getItem("username") !== null) {
+                    updateServiceList();
+                }
             });
         },
 
         initSettingsPage : function() {
+            var $page = $("#pageSettings");
+            
+            // Update localStorage with the specified username and password
+            $page.find("#username").change(function() {
+                var newVal = $(this).val();
+                localStorage.setItem("username", newVal);
+            });
+
+            $page.find("#password").change(function() {
+                var newVal = $(this).val();
+                localStorage.setItem("password", newVal);
+            });
         },
 
         initAddServicePage : function() {
@@ -74,9 +85,15 @@ var updateServiceList = function() {
                 return;
             }
 
+            var username = localStorage.getItem("username");
+
             // Create a new list
             $page.find(".content").html("<ul></ul>");
             $list = $page.find(".content ul");
+
+            // Add list header
+            var strHtml = '<li data-role="divider">' + username + '\'s running services</li>';
+            $list.append($(strHtml));
 
             for (var i=0; i < data.length; i++) {
                 // Create a list element
@@ -112,7 +129,7 @@ var updateServiceList = function() {
     });
 }
 
-function authUser() {
+var authUser = function() {
     // really use localStorage !
     localStorage.setItem("username", $("#username").val());
     localStorage.setItem("password", $("#password").val());
@@ -121,17 +138,19 @@ function authUser() {
     $.ajax({ 
         url: login_url,
         data: { 
-            "username": $("#username").val(), 
-            "password": $("#password").val()  
+            "username": localStorage.getItem("username"), 
+            "password": localStorage.getItem("password")
         }, 
         type: 'POST',
         success: function(res) { 
             if (eval(res)) {
                 // authentication succeeded
-                $.mobile.changePage("#service-list-page", "fade", true, false);
+                console.log("auth ok");
+                $.mobile.changePage("#ServiceListPage", "fade", true, false);
             }
             else {
-                $("#login-form-message").html("Authentication failed");
+                console.log("auth ko");
+                $.mobile.changePage("#SettingsPage", "fade", true, false);
             }
         },
         error: function() { 
@@ -144,8 +163,4 @@ function authUser() {
 
 $(document).ready(function() {
     $().initApp();
-
-    /* login-form behavior
-    $("#login-form").bind("submit", authUser);
-    */
 });
