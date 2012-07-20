@@ -193,8 +193,10 @@ var showError = function(title, message) {
 // Function to post data to the ConPaaS director and create a new
 // service
 var startService = function(elem) {
+    // Show the page loading dialog
+    $.mobile.showPageLoadingMsg();
+
     var serviceType = $(elem).attr("name");
-    console.log(serviceType);
 
     var url = ENDPOINT + "/start/" + serviceType;
 
