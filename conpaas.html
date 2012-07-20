@@ -152,9 +152,9 @@
         -->
 
         <div data-role="controlgroup" data-type="vertical" data-inline="true">
-            <a href="#" data-role="button" data-icon="arrow-r" data-iconpos="left">Start</a>
-            <a href="#" data-role="button" data-icon="delete" data-iconpos="left">Terminate</a>
-            <a href="#" data-role="button" data-icon="info" data-iconpos="left">Access Logs</a>
+            <a href="#" class="startService" data-role="button" data-icon="arrow-r" data-iconpos="left">Start</a>
+            <a href="#pageConfirmTermination" data-rel="dialog" data-role="button" data-icon="delete" data-iconpos="left">Terminate</a>
+            <a href="#" class="showServiceLogs" data-role="button" data-icon="info" data-iconpos="left">Access Logs</a>
         </div>
 
         <br />
@@ -166,6 +166,21 @@
 </section>
 <!-- End: Service detail Page -->
 
+<!-- Begin: Confirm Page -->
+<section id="pageConfirmTermination" data-role="page">
+    <header data-role="header"><h1>ConPaaS</h1></header>
+
+    <div class="content" data-role="content">
+        <h3>Do you really want to terminate this service?</h3>
+
+        <div data-role="controlgroup" data-type="horizontal" data-inline="true">
+            <a href="#" class="terminateService" data-role="button" data-icon="check" data-iconpos="left">Yes</a>
+            <a href="#pageServiceDetail" data-rel="back" data-role="button" data-icon="delete" data-iconpos="left">No</a>
+        </div>
+        
+    </div>
+</section>
+
 <!-- Begin: Error page -->
 <section id="pageError" data-role="page" data-theme="e">
 
@@ -176,6 +191,7 @@
 </section>
 <!-- End: Error page -->
 
+<!-- Error dialogs -->
 <a href="#pageError"
    id="show-error-page"
    data-role="button"

@@ -67,6 +67,12 @@ var ENDPOINT = "http://localhost:5000";
                 $("#nInstances").html(1 + 0);
             });
 
+            var $pageConfirm = $("#pageConfirmTermination");
+            // Service termination button
+            $pageConfirm.find(".terminateService").click(function() {
+                var service = JSON.parse($page.data("serviceJSON"));
+                terminateService(service.sid);
+            });
         },
 
         initAddServicePage : function() {
@@ -221,6 +227,12 @@ var startService = function(elem) {
                 "Error creating a new service. Please try again.");
         }
     });
+}
+
+// Function to post data to the ConPaaS director and terminate a running
+// ConPaaS service
+var terminateService = function(serviceId) {
+    console.log(serviceId);
 }
 
 $(document).ready(function() {
