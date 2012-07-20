@@ -232,7 +232,32 @@ var startService = function(elem) {
 // Function to post data to the ConPaaS director and terminate a running
 // ConPaaS service
 var terminateService = function(serviceId) {
-    console.log(serviceId);
+    // Show the page loading dialog
+    $.mobile.showPageLoadingMsg();
+
+    var url = ENDPOINT + "/stop/" + serviceId;
+
+    $.ajax({ 
+        url: url,
+        data: { 
+            "username": localStorage.getItem("username"), 
+            "password": localStorage.getItem("password")
+        }, 
+        type: 'POST',
+        success: function(res) { 
+            if (eval(res) === false) {
+                showError("Service termination error", 
+                    "Authentication failed. Please check your credentials.");
+            }
+            else {
+                $.mobile.changePage("#pageServiceList", "fade", true, false);
+            }
+        },
+        error: function() { 
+            showError("Service termination error", 
+                "Error terminating the service. Please try again.");
+        }
+    });
 }
 
 $(document).ready(function() {
