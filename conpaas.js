@@ -214,7 +214,7 @@ var startService = function(elem) {
         }, 
         type: 'POST',
         success: function(res) { 
-            if (eval(res) === false) {
+            if (JSON.parse(res) === false) {
                 showError("Service creation failure", 
                     "Authentication failed. Please check your credentials.");
             }
@@ -245,7 +245,7 @@ var terminateService = function(serviceId) {
         }, 
         type: 'POST',
         success: function(res) { 
-            if (eval(res) === false) {
+            if (JSON.parse(res) === false) {
                 showError("Service termination error", 
                     "Authentication failed. Please check your credentials.");
             }
