@@ -1,7 +1,4 @@
-/*
-var ENDPOINT = "http://ec2-107-21-172-31.compute-1.amazonaws.com";
-*/
-var ENDPOINT = "http://localhost:5000";
+var ENDPOINT = "http://ec2-50-19-61-92.compute-1.amazonaws.com:5000";
 
 (function($) {
     var updateServiceListIfConfigured = function() {
@@ -69,6 +66,11 @@ var ENDPOINT = "http://localhost:5000";
                 $("#nInstances").html(1 + 0);
             });
 
+            $page.find(".startupService").click(function() {
+                var service = JSON.parse($page.data("serviceJSON"));
+                startupService(service.sid);
+            });
+
             var $pageConfirm = $("#pageConfirmTermination");
             // Service termination button
             $pageConfirm.find(".terminateService").click(function() {
@@ -80,12 +82,12 @@ var ENDPOINT = "http://localhost:5000";
         initAddServicePage : function() {
             var $page = $("#pageAddService");
             $page.find(".addService").each(function(idx, el) {
-                $(el).click(function() { startService(el) });
+                $(el).click(function() { createService(el) });
             });
 
             var $page = $("#pageAddServiceWeb");
             $page.find(".addService").each(function(idx, el) {
-                $(el).click(function() { startService(el) });
+                $(el).click(function() { createService(el) });
             });
         },
 
@@ -200,7 +202,7 @@ var showError = function(title, message) {
 
 // Function to post data to the ConPaaS director and create a new
 // service
-var startService = function(elem) {
+var createService = function(elem) {
     // Show the page loading dialog
     $.mobile.showPageLoadingMsg();
 
@@ -258,6 +260,43 @@ var terminateService = function(serviceId) {
         error: function() { 
             showError("Service termination error", 
                 "Error terminating the service. Please try again.");
+        }
+    });
+}
+
+// Function to post data to the ConPaaS director and startup a new ConPaaS
+// service
+var startupService = function(serviceId) {
+    // Show the page loading dialog
+    $.mobile.showPageLoadingMsg();
+
+    var url = ENDPOINT + "/manager";
+
+    $.ajax({ 
+        url: url,
+        data: { 
+            /*
+            "username": localStorage.getItem("username"), 
+            "password": localStorage.getItem("password"),
+            */
+            "sid": serviceId,
+            "method": 'startup'
+        }, 
+        type: 'POST',
+        success: function(res) {
+            res = JSON.parse(res);
+
+            if (res['error'] !== null) {
+                showError("Service startup error", res["error"]);
+            }
+            else {
+                $.mobile.hidePageLoadingMsg();
+                // TODO
+            }
+        },
+        error: function() { 
+            showError("Service startup error", 
+                "Error starting up the service. Please try again.");
         }
     });
 }
