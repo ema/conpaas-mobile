@@ -62,6 +62,8 @@ var ENDPOINT = "http://localhost:5000";
                 // Set the manager vm id
                 $page.find(".managerVmid").html(service.vmid);
 
+                // Set the manager IP
+                $page.find(".managerIP").html(service.manager);
                 // Set instance count
                 // TODO: get the number of agents from the master and sum it up
                 $("#nInstances").html(1 + 0);
