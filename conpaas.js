@@ -46,37 +46,14 @@ var ENDPOINT = "http://ec2-50-19-61-92.compute-1.amazonaws.com:5000";
         },
 
         initServiceDetailPage : function() {
+            updateServiceDetail();
+
+            /*
             var $page = $("#pageServiceDetail");
 
-            // Every time this page shows, we need to display a service detail
             $page.bind("pageshow", function(event, ui) {
-                var service = JSON.parse($page.data("serviceJSON"));
-
-                // Set service name
-                //var strHtml = "<img src='images/" + service.type + ".png'>" + service.name;
-                $page.find(".serviceName").html(service.name);
-
-                // Set the manager vm id
-                $page.find(".managerVmid").html(service.vmid);
-
-                // Set the manager IP
-                $page.find(".managerIP").html(service.manager);
-                // Set instance count
-                // TODO: get the number of agents from the master and sum it up
-                $("#nInstances").html(1 + 0);
-            });
-
-            $page.find(".startupService").click(function() {
-                var service = JSON.parse($page.data("serviceJSON"));
-                startupService(service.sid);
-            });
-
-            var $pageConfirm = $("#pageConfirmTermination");
-            // Service termination button
-            $pageConfirm.find(".terminateService").click(function() {
-                var service = JSON.parse($page.data("serviceJSON"));
-                terminateService(service.sid);
-            });
+                updateServiceDetail();
+            });*/
         },
 
         initAddServicePage : function() {
@@ -185,6 +162,73 @@ var updateServiceList = function() {
             showError("Service listing failed", 
                 "We were unable to list the currently running services. Please try again.");
         }
+    });
+}
+
+var updateServiceDetail = function() {
+    var $page = $("#pageServiceDetail");
+
+    // Every time this page shows, we need to display a service detail
+    $page.bind("pageshow", function(event, ui) {
+        var service = JSON.parse($page.data("serviceJSON"));
+
+        // Set service name
+        //var strHtml = "<img src='images/" + service.type + ".png'>" + service.name;
+        $page.find(".serviceName").html(service.name);
+
+        // Set the manager vm id
+        $page.find(".managerVmid").html(service.vmid);
+
+        // Set the manager IP
+        $page.find(".managerIP").html(service.manager);
+
+        // Get more info from the manager
+        var url = ENDPOINT + "/manager";
+
+        $.ajax({ 
+            url: url,
+            data: { "sid": service.sid, "method": 'get_service_info' }, 
+            type: 'GET',
+            success: function(res) {
+                res = JSON.parse(res);
+
+                var state = res['result']['state'];
+                $page.find(".serviceStatus").html(state);
+
+                if (state === "RUNNING") {
+                    /* If the service is running it makes no sense to start it up */
+                    $page.find(".startupService").remove();
+
+                    /* Add the 'stop' button if necessary */
+                    if ($page.find(".stopService").length === 0) {
+                        $page.find(".serviceButtons").prepend('<a href="#" class="stopService" data-role="button" data-icon="arrow-r" data-iconpos="left">Stop</a>');
+                    }
+
+                    $page.find(".stopService").click(function() {
+                        alert("Stopping the service");
+                    });
+
+                    $page.trigger("pagecreate");
+                }
+            },
+            error: function() {}
+        });
+
+        // Set instance count
+        // TODO: get the number of agents from the master and sum it up
+        $("#nInstances").html(1 + 0);
+    });
+
+    $page.find(".startupService").click(function() {
+        var service = JSON.parse($page.data("serviceJSON"));
+        startupService(service.sid);
+    });
+
+    var $pageConfirm = $("#pageConfirmTermination");
+    // Service termination button
+    $pageConfirm.find(".terminateService").click(function() {
+        var service = JSON.parse($page.data("serviceJSON"));
+        terminateService(service.sid);
     });
 }
 
